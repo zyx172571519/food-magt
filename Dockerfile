@@ -10,6 +10,10 @@ COPY src ./src
 # Build a release artifact.
 RUN mvn package -DskipTests
 
+FROM adoptopenjdk/openjdk11:alpine-slim
+
+COPY --from=builder /app/target/helloworld-*.jar /helloworld.jar
+
 # Run the web service on container startup.
 CMD ["java","-Djava.security.egd=file:/dev/./urandom","-Dserver.port=8080","-jar","/app/target/food-magt-0.0.1-SNAPSHOT.jar"]
 
